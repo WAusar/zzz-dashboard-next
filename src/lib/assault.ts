@@ -942,6 +942,42 @@ export interface AssaultHistoryEntry {
 // "05/28" for one cycle — the screenshot reads 05/08 Unlocked and the cadence + team match
 // confirm it, so 05/08 is canon. Per-cycle score sums verified against Best Total, all five.
 const HISTORY: AssaultHistoryEntry[] = [
+  // 10/09 cycle, authored history-direct 2026-10-23 from A.'s two history cards — we forgot to
+  // log it live, and history screens carry no room specs, buffs or dmg/perf split, so none are
+  // recorded (unknown, not absent). Lineups matched face-by-face against the endgame + bangboo
+  // asset sheets; room scores sum to Best Total exactly. Third Scorched Horizon headline, hence
+  // the "III". Receipts: the Shungus core moved onto Kusarikku for 42,041 — +4,716 over Cissia/
+  // Seed/Astra's best there (37,325, 09/11); Remielle/Aria/Velina took Scorched Horizon to 60,688
+  // vs Miyabi core's 33,191 on 07/17. Infernal Revenant is a first sighting (no mugshot staged)
+  // and the weakest room at 32,859. Adversity = Phoenix's first recorded run, re-run the night
+  // she was pulled and built (B, 57%): Phoenix in Jane's slot on Integrated - Girtablullu,
+  // 30,309 at 21% — 3,999 under the Jane trio's 34,308 on 07/29. n=1 and buffs unknown, so a
+  // fresh-build data point, not a verdict.
+  {
+    id: "da-scorchedhorizon-2026-10", date: "2026-10-09", label: "Scorched Horizon Rotation III", score: 135588, rank: "3.10%", pips: 9,
+    targets: [
+      {
+        boss: "??? of the Scorched Horizon", bossSlug: "scorchedhorizon", score: 60688, pips: 3,
+        team: [{ slug: "remielledan", name: "Remielle Dan" }, { slug: "aria", name: "Aria" }, { slug: "velina", name: "Velina" }],
+        bangboo: { name: "Ariel", slug: "ariel" },
+      },
+      {
+        boss: "Infernal Revenant", score: 32859, pips: 3,
+        team: [{ slug: "miyabi", name: "Miyabi" }, { slug: "nangongyu", name: "Nangong Yu" }, { slug: "yuzuha", name: "Yuzuha" }],
+        bangboo: { name: "Biggest Fan", slug: "biggestfan" },
+      },
+      {
+        boss: "Kusarikku", bossSlug: "kusarikku", score: 42041, pips: 3,
+        team: [{ slug: "yeshunguang", name: "Ye Shunguang" }, { slug: "dialyn", name: "Dialyn" }, { slug: "sunna", name: "Sunna" }],
+        bangboo: { name: "Sprout", slug: "sprout" },
+      },
+    ],
+    adversity: {
+      boss: "Integrated - Girtablullu", bossSlug: "girtablullu", score: 30309, rank: "21%", pips: 3,
+      team: [{ slug: "remielledan", name: "Remielle Dan" }, { slug: "phoenix", name: "Phoenix" }, { slug: "velina", name: "Velina" }],
+      bangboo: { name: "Ariel", slug: "ariel" },
+    },
+  },
   // 08/28 cycle, authored history-direct 2026-09-11 from A.'s two result screens (the 09/11
   // reset had already superseded it, so — like 07/03 — it skips the marquee). Dead End Butcher
   // headlines for the second time since 05/22, hence the "II". Buffs aren't on the history
