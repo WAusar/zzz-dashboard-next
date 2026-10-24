@@ -286,6 +286,14 @@ the team spends doing none.** Coach the dead seconds, not the timing:
   opening did (two runs, 41 s and 37 s after Sobek died — "get it earlier" was coached and
   was not a lever). Integrated - Scorched Horizon: ~30 s near-zero opening in every run, then
   two Misty Veils (14–25 s each) of zero damage that pay the perf.
+- **The Blasphemer's blue shield gates the damage score — and the card never says so
+  (2026-10-23 receipt).** While it's up the HUD score does not move: two Phoenix shells sat
+  at 7–10 points for 1:13 and ~2:08 (9,873 and 15,569), then jumped +2.5k in one second at
+  the break. The Blight trio with Phoenix in Aria's slot (Remielle/Phoenix/Velina) scored from
+  0:04, stalled once for ~26 s, and posted 51,657 — A.'s draft, over the coach's. Three
+  different anomaly attributes breaking the shield in seconds is the whole room; spend the
+  Blight trio here first, even if that costs another room (A. ate 16.8k in Discordant Solo to
+  win 36k here, +19,318 package).
 - **Off-stun floor beats burst height when the script only allows two stuns.** Kusarikku:
   the Rupture carry's bursts were 322–498/s vs the Electric team's 228–343/s, and the Electric
   team won by 1,240 on a 154/s vs 54/s floor across the other 140 seconds.

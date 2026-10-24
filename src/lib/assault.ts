@@ -102,6 +102,122 @@ export const PERFORMANCE_MAX = 5000;
 // A., buffs + dates from the fandom wiki (icons matched against his result screenshots).
 // Scores/pips/attributes/gimmicks are screenshot-exact. Nothing pending.
 const CYCLES: AssaultCycle[] = [
+  // 10/23 rotation — authored 2026-10-23 the night it happened, room cards from A.'s
+  // screenshots, every run read off his ShadowPlay recordings (result cards + 1 fps HUD crops).
+  // Named for the headline boss (house rule; A.'s to veto).
+  //
+  // The story: a face-off — "Clio's Pick vs Andres' Pick", same buff pool, package vs package.
+  // Clio drafted Remielle/Aria/Velina into Discordant Solo and a Phoenix anomaly shell into the
+  // Blasphemer; A. put the Blight trio (Phoenix in Aria's slot) on the Blasphemer and the old
+  // 04/10 Discordant Solo team into Room 3. Room 2 was agreed. Clio's package: 15,569 + 39,057
+  // + 51,797 = 106,423 (8/9). A.'s: 51,657 + 39,057 + 35,027 = 125,741 (9/9) — +19,318, and
+  // his package is what's banked (Room 3 reset to field it). He ate 16.8k in Room 3 to win 36k
+  // in Room 1: Law 6, run better than its author. Phoenix's first Trial Mode outing.
+  //
+  // What the timelines proved: the Blasphemer's card never says it, but damage score does not
+  // move while its blue shield is up (A.: "it seems we get no points unless that breaks").
+  // Clio's shells sat at 7–10 points for 1:13 (Phoenix/Jane/Yuzuha) and ~2:08 (with Burnice,
+  // which wiped) before a one-second +2.5k jump at the break; the Blight trio scored from 0:04
+  // and lost only one ~26 s stall. Three different attributes = Disorder on tap = the shield is
+  // a speed bump, not a wall. Draft the Blight trio here first. Ranking unseen at capture
+  // (rank "—"); Adversity not yet run (A. is taking stabs tomorrow — "it's harder than
+  // previous times"). Bangboos for Rooms 1–2 weren't confirmed on screen, so they're omitted.
+  //
+  // Sourcing: scores/pips exact from the result cards in the recordings. Buff text is the
+  // picker's wording; all three wear the `element` icon (matched against the staged set). No
+  // full-body render staged for the Blasphemer or Discordant Solo (DeckImg self-hides).
+  {
+    id: "da-blasphemer-2026-10",
+    label: "Blasphemer Rotation",
+    date: "2026-10-23",
+    bestTotal: 125741,
+    rank: "—", // not seen at capture — refresh from the next result screen
+    rooms: [
+      {
+        room: 1,
+        boss: { name: "Blasphemer", slug: "blasphemer", level: 70 },
+        timeLimit: "03m 00s",
+        recommended: ["Fire"],
+        specialty: "Anomaly",
+        resistance: ["Ice"],
+        gimmick:
+          "Hits on the boss get +10% Anomaly Buildup Rate; 3 Afterglow Marks (one per Anomaly) put it in Wax Wings for 30s — +30% Attribute Anomaly DMG taken, +5% Daze per Anomaly. A Stun enters or resets Wax Wings. Perf: Chain Parry 1,000 each; Spatial Barrier golden-area Defensive Assist 1,500 each. Unlisted: no damage score while its blue shield is up.",
+        buff: {
+          name: "Blazing Descent",
+          slug: "element",
+          desc: "2/3 Anomaly-specialty Agents grant the squad +20/+50 Anomaly Proficiency. When an Anomaly-specialty Agent's Attribute Anomaly DMG crits, squad Attribute Anomaly DMG +20% and Fire Attribute Anomaly DMG +10% for 15s.",
+        },
+        pips: 3,
+        // A.'s pick: one run, 51,657 (47,657 + 4,000 — one Chain Parry short of the cap).
+        // Timeline: 754 by 0:04, ~1,367 by 0:11, flat ~26 s (shield), +4,000 in one second at
+        // ~0:47, 11,742 by 1:09. Clio's two shells on the same buff: Phoenix/Jane/Burnice 9,873
+        // (4,873 + 5,000, B, one pip, WIPEOUT — score frozen at 7 until ~2:08); Phoenix/Jane/
+        // Yuzuha 15,569 (10,569 + 5,000, A, two pips — frozen at 10 until 1:13, then ~50/s).
+        // Chasing Blazing's 3/3 tier with Burnice cost 5,696 against Yuzuha at 2/3.
+        scores: { total: 51657, damage: 47657, performance: 4000 },
+        team: [
+          { slug: "remielledan", name: "Remielle Dan" },
+          { slug: "phoenix", name: "Phoenix" },
+          { slug: "velina", name: "Velina" },
+        ],
+      },
+      {
+        room: 2,
+        boss: { name: "Unknown Corruption Complex", slug: "complexcorrupted", level: 70 },
+        timeLimit: "03m 00s",
+        recommended: ["Electric", "Ether"],
+        resistance: [],
+        gimmick:
+          "Enough DMG to the boss's legs triggers Impaired; breaking them restores 1,000 Decibels and stacks Disintegration (20s, ×4), each stack adding +25% CRIT DMG on hit. Each successful impair banks 800 Performance Points (cap 5,000).",
+        buff: {
+          name: "Radiant Sky",
+          slug: "element",
+          desc: "Stun-specialty Agents' Daze +20%, Energy generation +20%. After an EX Special or Special Attack, Sharp DMG +30% and attacks ignore 20% of Electric and Ether RES for 15s.",
+        },
+        pips: 3,
+        // Both packages, one run: 39,057 (34,257 + 4,800 — six impairs, the seventh is the
+        // last 200). 10,751 under 07/29's 49,808 on Heartcrusher (CRIT DMG +30%, Basic +30%) —
+        // Clio priced the missing CRIT DMG line at "a few thousand" and was off by 3×. Leg
+        // breaks at ~0:21/0:31/0:42/0:51, then 41 s and 54 s gaps: the back legs hide behind
+        // the body (A.: "awkward getting around his big ass crab body"). Slow stretches
+        // (1:56–1:39 left at ~36/s, 0:52–0:44 at ~20/s) line up with the gaps. A. estimates ~1k
+        // of headroom; reruns pending.
+        scores: { total: 39057, damage: 34257, performance: 4800 },
+        team: [
+          { slug: "yeshunguang", name: "Ye Shunguang" },
+          { slug: "dialyn", name: "Dialyn" },
+          { slug: "sunna", name: "Sunna" },
+        ],
+      },
+      {
+        room: 3,
+        boss: { name: "Discordant Solo - ???", slug: "discordantsolo", level: 70 },
+        timeLimit: "03m 00s",
+        recommended: ["Ether", "Wind"],
+        specialty: "Anomaly",
+        resistance: ["Fire", "Ice"],
+        gimmick:
+          "Agent Anomaly Buildup Rate +15% and Anomaly DMG to the boss +30%; in Ether Veil its Stun DMG Multiplier +30%. Perf: 350 per counter during a Control Skill, 750 for a Shutdown or final-strike counter (Impaired); a Counter Assist Shutdown banks the skill's remainder (cap 5,000).",
+        buff: {
+          name: "Perfect Rhythm",
+          slug: "element",
+          desc: "Stun-specialty Agents' Daze +15%; hitting a Stunned enemy slows its Stun recovery 10% for 15s. Attribute Anomaly DMG +15%, and a further +25% against Stunned enemies.",
+        },
+        pips: 3,
+        // A.'s pick: 35,027 (30,027 + 5,000), Nangong Yu MVP — 5,387 under the same trio's
+        // 40,414 here on 04/10. Clio's pick, Remielle/Aria/Velina + Ariel on Blazing Descent
+        // (3/3), did 51,797 (46,797 + 5,000), scoring from 0:03 with no shield — the room's
+        // best-ever by 11,383 — and was reset so the Blight trio could take Room 1.
+        scores: { total: 35027, damage: 30027, performance: 5000 },
+        team: [
+          { slug: "aria", name: "Aria" },
+          { slug: "nangongyu", name: "Nangong Yu" },
+          { slug: "yuzuha", name: "Yuzuha" },
+        ],
+        bangboo: { name: "Biggest Fan", slug: "biggestfan" },
+      },
+    ],
+  },
   // 09/25 rotation — authored 2026-09-25 the night it happened, and the first cycle read
   // straight off the game screen and his recordings instead of pasted screenshots: room cards
   // via computer-use screenshots (ZZZ runs elevated, so clicks never land — he clicks, Clio
