@@ -120,8 +120,9 @@ const CYCLES: AssaultCycle[] = [
   // which wiped) before a one-second +2.5k jump at the break; the Blight trio scored from 0:04
   // and lost only one ~26 s stall. Three different attributes = Disorder on tap = the shield is
   // a speed bump, not a wall. Draft the Blight trio here first. Ranking unseen at capture
-  // (rank "—"); Adversity not yet run (A. is taking stabs tomorrow — "it's harder than
-  // previous times"). Bangboos for Rooms 1–2 weren't confirmed on screen, so they're omitted.
+  // (rank "—"). Adversity: A. found it "harder than previous times" and broke 30k the same
+  // night (30,200; see the adversity block below). Bangboos for Rooms 1–2 weren't confirmed
+  // on screen, so they're omitted.
   //
   // Sourcing: scores/pips exact from the result cards in the recordings. Buff text is the
   // picker's wording; all three wear the `element` icon (matched against the staged set). No
@@ -130,7 +131,7 @@ const CYCLES: AssaultCycle[] = [
     id: "da-blasphemer-2026-10",
     label: "Blasphemer Rotation",
     date: "2026-10-23",
-    bestTotal: 125741,
+    bestTotal: 130852, // 125,741 until the 10/23 night rerun of Room 1 (+5,111)
     rank: "—", // not seen at capture — refresh from the next result screen
     rooms: [
       {
@@ -148,13 +149,18 @@ const CYCLES: AssaultCycle[] = [
           desc: "2/3 Anomaly-specialty Agents grant the squad +20/+50 Anomaly Proficiency. When an Anomaly-specialty Agent's Attribute Anomaly DMG crits, squad Attribute Anomaly DMG +20% and Fire Attribute Anomaly DMG +10% for 15s.",
         },
         pips: 3,
-        // A.'s pick: one run, 51,657 (47,657 + 4,000 — one Chain Parry short of the cap).
+        // RERUN, same night: 56,768 (51,768 + 5,000 — perf capped this time), +5,111 over the
+        // first run. Same trio, "with the new tricks" (A.), meaning the research night's rotation
+        // notes (docs/phoenix-trio-rotation.md). The +1,000 perf = the Chain Parry the first run missed.
+        // Combat record 👍 Velina 1,656 (MVP) · Phoenix 1,029 · Remielle 814. The card's Total
+        // Time reads 00:03:16 against a 03m 00s limit (as shown; cause unknown).
+        // First run, kept for the record: 51,657 (47,657 + 4,000 — one Chain Parry short of the cap).
         // Timeline: 754 by 0:04, ~1,367 by 0:11, flat ~26 s (shield), +4,000 in one second at
         // ~0:47, 11,742 by 1:09. Clio's two shells on the same buff: Phoenix/Jane/Burnice 9,873
         // (4,873 + 5,000, B, one pip, WIPEOUT — score frozen at 7 until ~2:08); Phoenix/Jane/
         // Yuzuha 15,569 (10,569 + 5,000, A, two pips — frozen at 10 until 1:13, then ~50/s).
         // Chasing Blazing's 3/3 tier with Burnice cost 5,696 against Yuzuha at 2/3.
-        scores: { total: 51657, damage: 47657, performance: 4000 },
+        scores: { total: 56768, damage: 51768, performance: 5000 },
         team: [
           { slug: "remielledan", name: "Remielle Dan" },
           { slug: "phoenix", name: "Phoenix" },
@@ -217,6 +223,41 @@ const CYCLES: AssaultCycle[] = [
         bangboo: { name: "Biggest Fan", slug: "biggestfan" },
       },
     ],
+    // Adversity — first stabs stalled under 30k on the Blight trio with Phoenix in Aria's
+    // slot. The fix, same night: tap Basic right after Phoenix's Ultimate. The Ult burns her HP
+    // into Wither and Quick-Assists out; Basic fires Soul-Searching Blaze (Abloom, +40% CRIT DMG
+    // on Sear) instead of letting it lapse. A.: "WAIT. I DID IT. 30,200!! by tapping basic after
+    // Phoenix's ULT". Third pip on the trio's first real Adversity run. Research behind it:
+    // docs/phoenix-trio-rotation.md (Gemini-chan digests of four Adversity runs, 42,436 top).
+    //
+    // Sourcing: total from A.'s message only, no result card or recording yet. ⚠️ The
+    // damage/performance split is PENDING: 25,200 + 5,000 assumes max perf, which both trio
+    // runs Gemini watched hit (Kappaz 42,436, MATTOFAKT 26,936), but A. hasn't confirmed it.
+    // Rank, buff, bangboo and medals are unseen. The boss name and card come from those
+    // videos' captures, not A.'s screen. The 3.3 card's Blight Mark text is truncated in every
+    // capture. Resistance reads disagree ("None" vs "Ether"), so it's left empty.
+    adversity: {
+      bestTotal: 30200,
+      rank: "—", // not seen — refresh from the result screen
+      room: {
+        room: 4,
+        label: "Adversity Mode",
+        boss: { name: "Integrated - Stagnant Aberrant", slug: "girtablullustagnantaberrant", level: 70 },
+        timeLimit: "03m 00s",
+        recommended: ["Fire"],
+        resistance: [],
+        targets: ADVERSITY_TARGETS,
+        gimmick:
+          "Each Attribute Anomaly gives the boss a Blight Mark of that attribute (max 3; rest of card unread). Corruptive Barrier: Defensive Assists break it faster, and the break Shutdowns the boss. Perfect Dodge/Assist on the Control Skill's first phase banks +500; a charging phase must be burst down.",
+        pips: 3,
+        scores: { total: 30200, damage: 25200, performance: 5000 }, // ⚠️ split pending A.'s result card
+        team: [
+          { slug: "remielledan", name: "Remielle Dan" },
+          { slug: "phoenix", name: "Phoenix" },
+          { slug: "velina", name: "Velina" },
+        ],
+      },
+    },
   },
   // 09/25 rotation — authored 2026-09-25 the night it happened, and the first cycle read
   // straight off the game screen and his recordings instead of pasted screenshots: room cards
