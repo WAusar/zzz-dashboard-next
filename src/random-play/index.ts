@@ -21,4 +21,5 @@ export { Receipt, Register, RoomSlip } from "./components/Register";
 export { Letterboard, NowShowing, Poster } from "./components/NowShowing";
 export { ChannelSearch, Deck } from "./components/ChannelSearch";
 export { ShelfTalker, StaffPicks } from "./components/StaffPicks";
-export { derivePicks, deriveSignal, pullArt, signalLedger, type CoachPicks, type CoachSignal } from "./data/store";
+export { deriveCombos, derivePicks, deriveSignal, pullArt, signalLedger, type CoachCombos, type CoachPicks, type CoachSignal } from "./data/store";
+export { ComboDeals, ComboPack } from "./components/ComboDeals";

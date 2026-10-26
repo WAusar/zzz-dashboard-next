@@ -1,0 +1,132 @@
+/* Random Play — COMBO DEALS: a profile's team bundles as shrink-wrapped 3-packs on a plank, tonight's
+   lockout bill as ticket stubs, and the open bundle as a big paper card. Same grammar as backroom.css;
+   entrances replay via useTake keys. */
+
+.rp-combos { clip-path: inset(0 0 0 100%); transition: clip-path var(--rp-dur-wipe) var(--rp-ease-wipe); pointer-events: none; }
+.rp-combos.is-in { clip-path: inset(0 0 0 0); pointer-events: auto; }
+.rp-combos__empty { position: absolute; left: 48px; top: 40px; width: 560px; }
+
+.rp-combos__head { position: absolute; left: 48px; right: 48px; top: 18px; height: 96px; display: flex; justify-content: space-between; align-items: flex-end; animation: rp-rise .6s var(--rp-ease-out) both; }
+.rp-combos__kicker { font-family: var(--rp-font-mono); font-size: var(--rp-size-label); font-weight: 700; letter-spacing: .2em; color: var(--rp-text-2); }
+.rp-combos__title { margin: 4px 0 0; font-family: var(--rp-font-display); text-transform: uppercase; font-size: var(--rp-size-h1); font-weight: 900; line-height: .9; }
+.rp-combos__sub { font-size: var(--rp-size-small); color: var(--rp-text-2); margin-top: 6px; }
+.rp-combos__sign { display: flex; flex-direction: column; align-items: flex-end; font-family: var(--rp-font-mono); font-size: 10px; font-weight: 700; letter-spacing: .16em; color: var(--rp-text-2); }
+.rp-combos__sign b { font-family: var(--rp-font-hand); font-size: 44px; font-weight: 400; letter-spacing: 0; color: var(--rp-ink); line-height: 1.1; transform: rotate(-4deg); }
+
+/* ============================================================ the shelf of 3-packs */
+.rp-combos__shelf { position: absolute; left: 48px; right: 48px; top: 128px; height: 214px; display: flex; justify-content: space-between; align-items: flex-start; padding-top: 14px; }
+.rp-combos__shelf::after { content: ''; position: absolute; left: -12px; right: -12px; top: 200px; height: 12px; background: var(--rp-ink-2); border-top: 3px solid var(--rp-wood); }
+
+.rp-pack { position: relative; width: 176px; height: 182px; flex: none; border: 3px solid var(--rp-ink); border-radius: 4px; background: var(--rp-ink); transform: var(--rp-tilt); transform-origin: 50% 100%; box-shadow: 0 8px 12px -8px rgba(23, 19, 15, .55); transition: transform var(--rp-dur-quick) var(--rp-ease-out), box-shadow var(--rp-dur-quick); animation: rp-packdrop .7s var(--rp-ease-out) backwards; }
+.rp-pack:hover { transform: translateY(-5px) rotate(0); }
+.rp-pack.is-on { transform: translateY(-8px) rotate(0); box-shadow: 0 0 0 3px var(--rp-card), 0 0 0 6px var(--rp-accent), 0 14px 16px -10px rgba(23, 19, 15, .6); }
+.rp-pack__spines { position: absolute; inset: 0; display: flex; overflow: hidden; border-radius: 1px; }
+/* one closed spine = the centre 70×220 of a 250×417 jacket, at 0.8 → 56×176 (the wall's eye line, scaled) */
+.rp-pack__spine { position: relative; width: 56px; height: 176px; flex: none; overflow: hidden; border-right: 1px solid rgba(23, 19, 15, .7); }
+.rp-pack__spine:last-child { width: 58px; border-right: 0; }
+.rp-pack__spine img { position: absolute; left: -72px; top: 0; width: 200px; height: 334px; }
+/* shrink-wrap: two glare streaks + a faint film edge */
+.rp-pack__wrap { position: absolute; inset: 0; pointer-events: none; background:
+  linear-gradient(115deg, transparent 22%, rgba(255, 255, 255, .34) 30%, transparent 37%, transparent 60%, rgba(255, 255, 255, .16) 65%, transparent 70%),
+  linear-gradient(180deg, rgba(255, 255, 255, .12), transparent 30%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25); transition: opacity var(--rp-dur-quick); }
+.rp-pack:hover .rp-pack__wrap { opacity: .7; }
+.rp-pack__band { position: absolute; left: -3px; right: -3px; bottom: 10px; min-height: 46px; background: var(--rp-card); border-top: 2px solid var(--rp-ink); border-bottom: 2px solid var(--rp-ink); border-left: 8px solid var(--rp-pack-el); padding: 4px 8px 4px 8px; display: flex; flex-direction: column; text-align: left; }
+.rp-pack__name { font-family: var(--rp-font-hand); font-size: 17px; line-height: 1; overflow-wrap: anywhere; }
+.rp-pack__meta { font-family: var(--rp-font-mono); font-size: 8.5px; font-weight: 700; letter-spacing: .12em; color: var(--rp-text-2); margin-top: 3px; white-space: nowrap; }
+/* the proof sticker: a starburst price-tag */
+.rp-pack__sticker { position: absolute; right: -16px; top: -16px; width: 66px; height: 66px; display: flex; align-items: center; justify-content: center; transform: rotate(12deg);
+  clip-path: polygon(50% 0, 61% 12%, 77% 6%, 80% 22%, 96% 25%, 90% 40%, 100% 52%, 89% 62%, 94% 78%, 78% 80%, 74% 96%, 60% 89%, 48% 100%, 38% 89%, 22% 95%, 20% 79%, 4% 75%, 11% 61%, 0 49%, 11% 38%, 6% 23%, 22% 20%, 26% 4%, 40% 11%);
+  background: var(--rp-ink); }
+.rp-pack__sticker b { display: flex; align-items: center; justify-content: center; width: 58px; height: 58px; text-align: center; font-family: var(--rp-font-display); font-size: 12.5px; font-weight: 900; line-height: .95; letter-spacing: .02em;
+  clip-path: inherit; padding: 0 9px; }
+.rp-pack.is-proven .rp-pack__sticker b { background: var(--rp-grade-s); color: var(--rp-grade-s-fg); }
+.rp-pack.is-adapted .rp-pack__sticker b { background: var(--rp-accent); color: var(--rp-ink); }
+.rp-pack.is-guide .rp-pack__sticker b { background: var(--rp-card); color: var(--rp-ink); }
+@keyframes rp-packdrop { 0% { opacity: 0; transform: translateY(-30px) rotate(-5deg); } 65% { opacity: 1; transform: translateY(3px) var(--rp-tilt); } 100% { opacity: 1; transform: var(--rp-tilt); } }
+
+/* ============================================================ tonight's bill (ticket stubs) */
+.rp-bill { position: absolute; left: 48px; right: 48px; top: 362px; height: 104px; display: flex; gap: 14px; animation: rp-rise .6s var(--rp-ease-out) .15s both; }
+.rp-bill__label { width: 236px; flex: none; display: flex; flex-direction: column; justify-content: center; padding: 0 16px; background: var(--rp-ink); color: var(--rp-on-ink); border-radius: var(--rp-radius-lg); transform: rotate(-1.2deg); }
+.rp-bill__kicker { font-family: var(--rp-font-mono); font-size: 10px; font-weight: 700; letter-spacing: .2em; color: var(--rp-accent); }
+.rp-bill__label b { font-family: var(--rp-font-display); text-transform: uppercase; font-size: 18px; font-weight: 900; line-height: 1; margin-top: 4px; }
+.rp-bill__date { font-family: var(--rp-font-mono); font-size: 8.5px; white-space: nowrap; letter-spacing: .12em; color: var(--rp-on-ink-3); margin-top: 6px; }
+.rp-ticket { position: relative; flex: 1; min-width: 0; display: flex; background: var(--rp-card); border: 2px solid var(--rp-ink); border-radius: var(--rp-radius-md); overflow: hidden; text-align: left; transition: transform var(--rp-dur-quick) var(--rp-ease-out), box-shadow var(--rp-dur-quick); }
+.rp-ticket:not(:disabled):hover { transform: translateY(-3px); }
+.rp-ticket.is-on { box-shadow: 0 0 0 3px var(--rp-accent); }
+.rp-ticket:disabled { cursor: default; opacity: .7; }
+.rp-ticket__stub { width: 54px; flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--rp-paper-2); border-right: 2px dashed var(--rp-rule); }
+.rp-ticket__stub small { font-family: var(--rp-font-mono); font-size: 8.5px; font-weight: 700; letter-spacing: .16em; color: var(--rp-text-2); }
+.rp-ticket__stub b { font-family: var(--rp-font-display); font-size: 40px; font-weight: 900; line-height: 1; }
+.rp-ticket.is-on .rp-ticket__stub { background: var(--rp-accent); }
+.rp-ticket__boss { width: 64px; flex: none; position: relative; overflow: hidden; background: radial-gradient(circle at 50% 35%, var(--rp-paper-2), var(--rp-card) 70%); }
+.rp-ticket__boss img { position: absolute; left: -10px; top: -4px; width: 92px; height: 127px; object-fit: contain; object-position: 50% 0; }
+.rp-ticket__body { flex: 1; min-width: 0; padding: 8px 12px 0 10px; display: flex; flex-direction: column; gap: 4px; }
+.rp-ticket__name { font-family: var(--rp-font-display); text-transform: uppercase; font-size: 18px; font-weight: 900; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rp-ticket__els { display: flex; gap: 8px; min-width: 0; }
+.rp-ticket__els .rp-elrow { gap: 4px; }
+.rp-ticket__els .rp-elrow__label { font-size: 8.5px; letter-spacing: .08em; }
+.rp-ticket__els .rp-elrow__el { font-size: 9px; letter-spacing: 0; gap: 2px; }
+.rp-ticket__els .rp-elrow__el img { width: 14px; height: 14px; }
+.rp-ticket__deal { display: flex; align-items: center; gap: 7px; margin-top: auto; padding-bottom: 8px; font-family: var(--rp-font-hand); font-size: 15px; line-height: 1; white-space: nowrap; min-width: 0; }
+.rp-ticket__deal > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.rp-ticket__deal .rp-cast__face { width: 26px; height: 26px; box-shadow: 0 0 0 2px var(--rp-card); margin-left: -6px; }
+.rp-ticket__deal .rp-cast__face:first-child { margin-left: 0; }
+.rp-ticket__deal .rp-cast__plus, .rp-ticket__deal .rp-cast__bb { display: none; }
+
+/* ============================================================ the open bundle */
+.rp-combo { position: absolute; left: 48px; right: 48px; top: 484px; bottom: 16px; display: flex; background: var(--rp-card); border: 3px solid var(--rp-ink); border-radius: var(--rp-radius-lg); overflow: hidden; box-shadow: 0 10px 0 -4px rgba(23, 19, 15, .2); animation: rp-rise .55s var(--rp-ease-out) both; }
+.rp-combo.is-tall { top: 362px; }
+.rp-combo__stage { position: relative; width: 540px; flex: none; padding: 16px 22px 0 26px; border-right: 3px solid var(--rp-ink); background: linear-gradient(180deg, color-mix(in srgb, var(--rp-pack-el) 22%, var(--rp-card)), var(--rp-card) 75%); overflow: hidden; }
+.rp-combo__stage::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 10px; background: var(--rp-pack-el); }
+.rp-combo__kicker { font-family: var(--rp-font-mono); font-size: var(--rp-size-micro); font-weight: 700; letter-spacing: .18em; color: var(--rp-text-2); }
+.rp-combo__name { margin: 2px 0 0; font-family: var(--rp-font-hand); font-size: 46px; font-weight: 400; line-height: 1.05; }
+.rp-combo__arch { font-size: 12.5px; color: var(--rp-text-2); margin-top: 2px; }
+.rp-combo__proof { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-family: var(--rp-font-mono); font-size: 10px; font-weight: 700; letter-spacing: .1em; }
+.rp-combo__seal { padding: 4px 10px; border: 2px solid var(--rp-ink); border-radius: 14px; font-family: var(--rp-font-display); font-size: 14px; font-weight: 900; letter-spacing: .06em; transform: rotate(-3deg); }
+.rp-combo.is-proven .rp-combo__seal { background: var(--rp-grade-s); color: var(--rp-grade-s-fg); }
+.rp-combo.is-adapted .rp-combo__seal { background: var(--rp-accent); color: var(--rp-ink); }
+.rp-combo.is-guide .rp-combo__seal { background: var(--rp-ink); color: var(--rp-on-ink); }
+/* the squad cards are composed art: zoom the whole lineup, never re-cut it (keeps the 0.29 slant + 72px overlap) */
+.rp-combo__lineup { display: flex; align-items: flex-end; margin-top: 10px; zoom: .58; }
+.rp-combo__checks { position: absolute; left: 26px; right: 22px; bottom: 14px; display: flex; gap: 8px; }
+.rp-combo__check { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: var(--rp-card); border: 2px solid var(--rp-ink); border-radius: var(--rp-radius-md); transition: transform var(--rp-dur-tick); }
+.rp-combo__check:hover { transform: translateY(-2px); }
+.rp-combo__check span:last-child { display: flex; flex-direction: column; min-width: 0; font-family: var(--rp-font-mono); font-size: 8.5px; font-weight: 700; letter-spacing: .1em; color: var(--rp-text-2); white-space: nowrap; }
+.rp-combo__check b { font-family: var(--rp-font-display); text-transform: uppercase; font-size: 15px; font-weight: 900; letter-spacing: .02em; color: var(--rp-ink); line-height: 1.05; overflow: hidden; text-overflow: ellipsis; }
+
+.rp-combo__notes { flex: 1; min-width: 0; padding: 16px 26px 36px; display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
+.rp-combo__label { font-family: var(--rp-font-mono); font-size: var(--rp-size-micro); font-weight: 700; letter-spacing: .18em; color: var(--rp-accent); margin-top: 6px; }
+.rp-combo__label:first-child { margin-top: 0; }
+.rp-combo__prose { font-size: 13.5px; line-height: 1.5; color: var(--rp-ink-2); }
+.rp-combo__prose p { margin: 0 0 6px; }
+.rp-combo__tonight { margin-top: auto; margin-bottom: 4px; padding: 8px 12px; background: var(--rp-paper); border-left: 5px solid var(--rp-accent); font-size: 12.5px; line-height: 1.4; color: var(--rp-ink-2); }
+.rp-combo__tonight b { display: block; font-family: var(--rp-font-mono); font-size: 10px; letter-spacing: .16em; color: var(--rp-ink); margin-bottom: 2px; }
+
+.rp-combo__side { width: 300px; flex: none; padding: 16px 22px 14px 0; display: flex; flex-direction: column; gap: 6px; overflow: hidden; }
+.rp-combo__kin { margin: 2px 0 2px; }
+.rp-combo__kin .rp-cast__face { width: 40px; height: 40px; }
+.rp-combo__kin .rp-cast__plus, .rp-combo__kin .rp-cast__bb { display: none; }
+/* receipts reuse Triple Features' run rows, re-inked for paper */
+.rp-combo .rp-run { padding: 6px 0; border-bottom: 1px dotted var(--rp-rule); color: var(--rp-ink); }
+.rp-combo .rp-run__when, .rp-combo .rp-run__boss { color: var(--rp-text-2); }
+.rp-combo .rp-run__bar { background: var(--rp-paper-2); }
+.rp-combo .rp-run__bar > div { background: var(--rp-ink); }
+.rp-combo .rp-run.is-cap .rp-run__bar > div { background: var(--rp-accent); }
+.rp-combo .rp-variant { font-size: 12px; line-height: 1.4; color: var(--rp-ink-2); padding-bottom: 6px; border-bottom: 1px dotted var(--rp-rule); }
+.rp-combo .rp-variant b { color: var(--rp-ink); }
+.rp-combo__src { margin-top: auto; font-family: var(--rp-font-mono); font-size: 8.5px; letter-spacing: .08em; color: var(--rp-text-3); line-height: 1.4; }
+.rp-combo__sig { position: absolute; right: 330px; bottom: 8px; font-family: var(--rp-font-hand); font-size: 20px; transform: rotate(-3deg); }
+
+/* aisle signs: House Favorites / Cult Classics */
+.rp-combos__aisles { display: flex; gap: 10px; margin-left: auto; margin-right: 28px; align-self: center; }
+.rp-aisle { display: flex; flex-direction: column; align-items: flex-start; padding: 8px 14px; border: 2px solid var(--rp-ink); border-radius: var(--rp-radius-md); background: var(--rp-card); transition: transform var(--rp-dur-tick), background var(--rp-dur-quick), color var(--rp-dur-quick); }
+.rp-aisle:hover { transform: translateY(-2px); }
+.rp-aisle b { font-family: var(--rp-font-display); font-size: 20px; font-weight: 900; line-height: 1; letter-spacing: .02em; }
+.rp-aisle small { font-family: var(--rp-font-mono); font-size: 8.5px; font-weight: 700; letter-spacing: .12em; color: var(--rp-text-2); margin-top: 4px; }
+.rp-aisle.is-on { background: var(--rp-ink); color: var(--rp-on-ink); transform: rotate(-1.5deg); }
+.rp-aisle.is-on small { color: var(--rp-on-ink-3); }
+.rp-aisle.is-cult.is-on { background: var(--rp-grade-b); border-color: var(--rp-ink); color: var(--rp-grade-b-fg); }
+.rp-aisle.is-cult.is-on small { color: var(--rp-grade-b-fg); opacity: .8; }
+/* the cult shelf hangs a little crooked under a purple plank */
+.rp-combos__shelf.is-cult::after { background: var(--rp-grade-b); border-top-color: var(--rp-ink-2); }
+.rp-combo__field { font-family: var(--rp-font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: .04em; line-height: 1.45; color: var(--rp-ink); padding: 6px 8px; background: var(--rp-paper); border-radius: var(--rp-radius-sm); }

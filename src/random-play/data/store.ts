@@ -1,7 +1,8 @@
 // Adapters for the back-of-store surfaces: Channel Search (A.'s Signal archive) and Staff Picks
 // (a profile's pull-priority list). Pure functions over what the dashboard already has.
 import { BANGBOO_BY_NAME, EMOTE_ALIAS, PULL_NAME_ALIAS } from "./meta";
-import type { PullOutcome, SignalArchive, SignalChannel, SignalPull, StaffPick } from "./types";
+import type { Element } from "../tokens";
+import type { BossRef, ComboBill, ComboDeal, ComboShelf, Mode, PullOutcome, Run, SignalArchive, SignalChannel, SignalPull, StaffPick } from "./types";
 
 // ---------------------------------------------------------------- Signal
 // Accepts the dashboard's own SignalSummary (signal-analytics.ts, pulls carry `record`) OR the trimmed
@@ -64,4 +65,56 @@ export function derivePicks(raw: CoachPicks, profile = "wife-zzz"): StaffPick[] 
     team: p.team.split("\n").map((s) => s.trim()).filter(Boolean),
     upcoming: !!p.upcoming, eta: p.eta ?? null, leak: !!p.leak,
   })).sort((a, b) => a.rank - b.rank);
+}
+
+// ---------------------------------------------------------------- Combo Deals
+interface RawCombo {
+  id: string; shelf?: ComboShelf; name: string; archetype: string; attribute: string;
+  members: { slug: string; role: string }[];
+  swapNote?: string; field?: string; why: string; room: string; caution?: string;
+  swaps?: { team: string; when: string }[]; bangboo?: string; sources?: string[];
+}
+interface RawBill {
+  mode: Mode; label: string; date: string; note: string;
+  rooms: { room: number; boss: BossRef; recommended: string[]; resistance: string[]; deal: string | null; note: string; ref?: { team: string[]; score: number } }[];
+}
+export interface CoachCombos { profiles: Record<string, { deals: RawCombo[]; bill?: RawBill }> }
+
+const byScore = (a: Run, b: Run) => b.score - a.score;
+const sameTeam = (a: string[], b: string[]) => a.length === b.length && a.every((s) => b.includes(s));
+
+/**
+ * Combo Deals = editorial bundles (the dashboard's combo-deals.ts) + receipts from A.'s logs. The proof
+ * level is DERIVED, never typed in: a trio with a logged run is `proven`; one whose carry has a logged
+ * shell that shares a second member is `adapted` (the shell is its `kin`); anything else is a `guide` pick.
+ * `runs` = A.'s flattened runs (`flattenRuns(…, "andres-zzz")`), because her account has no logs.
+ */
+export function deriveCombos(raw: CoachCombos, runs: Run[], profile = "wife-zzz"): { deals: ComboDeal[]; bill: ComboBill | null } {
+  const p = raw.profiles[profile];
+  if (!p) return { deals: [], bill: null };
+  const deals = p.deals.map((d): ComboDeal => {
+    const order = d.members.map((m) => m.slug);
+    const receipts = runs.filter((r) => sameTeam(r.team, order)).sort(byScore);
+    const kin = receipts.length ? [] : runs
+      .filter((r) => r.team.includes(order[0]) && r.team.filter((s) => order.includes(s)).length >= 2)
+      .sort(byScore).slice(0, 4);
+    return {
+      id: d.id, shelf: d.shelf ?? "house", name: d.name, archetype: d.archetype, attribute: d.attribute as Element | "",
+      order, roles: Object.fromEntries(d.members.map((m) => [m.slug, m.role])),
+      proof: receipts.length ? "proven" : kin.length ? "adapted" : "guide",
+      swapNote: d.swapNote ?? null, field: d.field ?? null,
+      why: d.why.split("\n\n").map((s) => s.trim()).filter(Boolean),
+      room: d.room, caution: d.caution ?? "", swaps: d.swaps ?? [], bangboo: d.bangboo ?? null,
+      receipts, kin, sources: d.sources ?? [],
+    };
+  });
+  const ids = new Set(deals.map((d) => d.id));
+  const bill: ComboBill | null = p.bill ? {
+    mode: p.bill.mode, label: p.bill.label, date: p.bill.date, note: p.bill.note,
+    rooms: p.bill.rooms.map((r) => ({
+      room: r.room, boss: r.boss, recommended: r.recommended as Element[], resistance: r.resistance as Element[],
+      deal: r.deal && ids.has(r.deal) ? r.deal : null, note: r.note, ref: r.ref ?? null,
+    })),
+  } : null;
+  return { deals, bill };
 }

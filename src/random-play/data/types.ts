@@ -217,3 +217,57 @@ export interface StaffPick {
   eta: string | null;
   leak: boolean;
 }
+
+// ---------------------------------------------------------------- Combo Deals (team bundles from a profile's own tapes)
+/** How sure the bundle is: `proven` = this exact trio is in A.'s logs; `adapted` = one of A.'s logged shells
+ *  with her own tape swapped in; `guide` = a guide-site / community team nobody here has run yet. */
+export type ComboProof = "proven" | "adapted" | "guide";
+
+/** One combo deal: a 3-tape team built ONLY from the profile's own roster. */
+export type ComboShelf = "house" | "cult";
+
+export interface ComboDeal {
+  id: string;
+  /** `house` = House Favorites (the core lanes); `cult` = Cult Classics (rare teams that score). */
+  shelf: ComboShelf;
+  name: string;
+  /** Team grammar in a line ("Attack hypercarry · DPS + Stun + Support"). */
+  archetype: string;
+  attribute: Element | "";
+  /** Carry first. */
+  order: string[];
+  roles: Record<string, string>;
+  proof: ComboProof;
+  /** For `adapted`: what changed from A.'s shell ("Yanagi in for Nangong Yu"). */
+  swapNote: string | null;
+  /** Community numbers in a line ("Prydwen M0 avg · DA 30,643 · SD 29,541"); null = none on file. */
+  field: string | null;
+  /** Paragraphs. */
+  why: string[];
+  room: string;
+  caution: string;
+  swaps: { team: string; when: string }[];
+  bangboo: string | null;
+  /** A.'s logged runs of this exact trio, best first. */
+  receipts: Run[];
+  /** For `adapted` deals: A.'s best runs of the shell it was adapted from (members ⊇ carry), best first. */
+  kin: Run[];
+  sources: string[];
+}
+
+/** One room of the live rotation, answered with a deal from the shelf. */
+export interface ComboBillRoom {
+  room: number;
+  boss: BossRef;
+  recommended: Element[];
+  resistance: Element[];
+  /** `ComboDeal.id`; null = nothing on her shelf fits (say so, don't force it). */
+  deal: string | null;
+  /** Why this deal goes here (one or two sentences). */
+  note: string;
+  /** A.'s team + score in this exact room, for scale. */
+  ref: { team: string[]; score: number } | null;
+}
+
+/** "Tonight's bill": the current lockout rotation, one deal per room, no tape used twice. */
+export interface ComboBill { mode: Mode; label: string; date: string; rooms: ComboBillRoom[]; note: string }

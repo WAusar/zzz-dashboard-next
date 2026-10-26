@@ -2,10 +2,11 @@
 import { useEffect, useRef, type CSSProperties } from "react";
 import { PlayGlyph } from "./primitives";
 
-export type SectionId = "wall" | "features" | "register" | "showing" | "channel" | "picks";
+export type SectionId = "wall" | "features" | "combos" | "register" | "showing" | "channel" | "picks";
 const ALL_SECTIONS: { id: SectionId; label: string; hint: string }[] = [
   { id: "wall", label: "RENTAL WALL", hint: "Agent roster" },
   { id: "features", label: "TRIPLE FEATURES", hint: "Teams" },
+  { id: "combos", label: "COMBO DEALS", hint: "Teams from your own tapes" },
   { id: "register", label: "THE REGISTER", hint: "Shiyu Defense" },
   { id: "showing", label: "NOW SHOWING", hint: "Deadly Assault" },
   { id: "channel", label: "CHANNEL SEARCH", hint: "Signal Search archive" },

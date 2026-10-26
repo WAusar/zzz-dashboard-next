@@ -1,7 +1,8 @@
 "use client";
 import { useMemo, useState } from "react";
-import type { Agent, AssaultCycle, BuildDetail, EditStatus, EndgameLedger, SceneEditor, ShiyuCycle, SignalArchive, StaffPick, Team } from "../data/types";
+import type { Agent, AssaultCycle, BuildDetail, ComboBill, ComboDeal, EditStatus, EndgameLedger, SceneEditor, ShiyuCycle, SignalArchive, StaffPick, Team } from "../data/types";
 import { ChannelSearch } from "./ChannelSearch";
+import { ComboDeals } from "./ComboDeals";
 import { NowShowing } from "./NowShowing";
 import { Register } from "./Register";
 import { StaffPicks } from "./StaffPicks";
@@ -10,13 +11,13 @@ import { TapeJacket, type JacketTab } from "./TapeJacket";
 import { Clerk, GenreFilterBar, TapeWall, Ticker, type GenreFilter } from "./TapeWall";
 import { TripleFeatures } from "./TripleFeatures";
 
-export type View = "shelf" | "tape" | "teams" | "shiyu" | "assault" | "signal" | "picks";
+export type View = "shelf" | "tape" | "teams" | "combos" | "shiyu" | "assault" | "signal" | "picks";
 
-/** `shiyu` / `assault` = the cycle index on show in each ledger (0 = newest); `pick` = the open staff pick. */
-export interface RandomPlayState { view: View; selected: string; tab: JacketTab; filter: GenreFilter; team: number; shiyu: number; assault: number; pick: number }
+/** `shiyu` / `assault` = the cycle index on show in each ledger (0 = newest); `pick` = the open staff pick; `combo` = the open combo deal. */
+export interface RandomPlayState { view: View; selected: string; tab: JacketTab; filter: GenreFilter; team: number; shiyu: number; assault: number; pick: number; combo: number }
 
-const SECTION_OF: Record<View, SectionId> = { shelf: "wall", tape: "wall", teams: "features", shiyu: "register", assault: "showing", signal: "channel", picks: "picks" };
-const VIEW_OF: Record<SectionId, View> = { wall: "shelf", features: "teams", register: "shiyu", showing: "assault", channel: "signal", picks: "picks" };
+const SECTION_OF: Record<View, SectionId> = { shelf: "wall", tape: "wall", teams: "features", combos: "combos", shiyu: "register", assault: "showing", signal: "channel", picks: "picks" };
+const VIEW_OF: Record<SectionId, View> = { wall: "shelf", features: "teams", combos: "combos", register: "shiyu", showing: "assault", channel: "signal", picks: "picks" };
 const EMPTY = { cycles: [], history: [] };
 
 export interface RandomPlayProps {
@@ -32,6 +33,8 @@ export interface RandomPlayProps {
   signal?: SignalArchive;
   /** Pull-priority list (`derivePicks`) → Staff Picks, with who it's for and who picked. */
   picks?: { list: StaffPick[]; forName: string; staff: string };
+  /** Team bundles built from the profile's own tapes (`deriveCombos`) → Combo Deals, plus tonight's lockout bill. */
+  combos?: { deals: ComboDeal[]; bill: ComboBill | null; forName: string; staff: string };
   uid?: string;
   initial?: Partial<RandomPlayState>;
   /** Fired on every state change — the dashboard syncs this to the URL (see docs/07-migration.md). */
@@ -50,16 +53,18 @@ const SYNC_SUFFIX: Record<EditStatus, string> = { live: "", saving: " · SAVING"
  * its exit animation — keep this shape when porting to the dashboard. Sections are profile-aware: a
  * section only exists when its data does (Cosmea has Staff Picks and no Signal; A. the reverse).
  */
-export function RandomPlay({ agents, teams, details = {}, shiyu = EMPTY, assault = EMPTY, signal, picks, uid, initial, onStateChange, editorFor, sync = "live" }: RandomPlayProps) {
-  const [s, setS] = useState<RandomPlayState>({ view: "shelf", selected: agents[0]?.slug ?? "", tab: 0, filter: "All", team: 0, shiyu: 0, assault: 0, pick: 0, ...initial });
+export function RandomPlay({ agents, teams, details = {}, shiyu = EMPTY, assault = EMPTY, signal, picks, combos, uid, initial, onStateChange, editorFor, sync = "live" }: RandomPlayProps) {
+  const [s, setS] = useState<RandomPlayState>({ view: "shelf", selected: agents[0]?.slug ?? "", tab: 0, filter: "All", team: 0, shiyu: 0, assault: 0, pick: 0, combo: 0, ...initial });
   const [sweep, setSweep] = useState(0); // bumps on every view change → TrackingBand remounts and sweeps
   const roster = useMemo(() => Object.fromEntries(agents.map((a) => [a.slug, a])), [agents]);
   const agent = roster[s.selected] ?? agents[0];
   const hasPicks = !!picks?.list.length;
+  const hasCombos = !!combos?.deals.length;
 
   const sections: SectionId[] = [
     "wall",
     ...(teams.length ? ["features" as const] : []),
+    ...(hasCombos ? ["combos" as const] : []),
     ...(shiyu.cycles.length ? ["register" as const] : []),
     ...(assault.cycles.length ? ["showing" as const] : []),
     ...(signal ? ["channel" as const] : []),
@@ -76,6 +81,7 @@ export function RandomPlay({ agents, teams, details = {}, shiyu = EMPTY, assault
   const status = {
     tape: `PLAY · ${agent.name.toUpperCase()}`,
     teams: "PLAY · TRIPLE FEATURES",
+    combos: `PLAY · COMBO DEAL · ${combos?.deals[s.combo]?.name.toUpperCase() ?? ""}`,
     shiyu: `PRINT · SHIYU ${shiyu.cycles[s.shiyu]?.date.slice(5).replace("-", "/") ?? ""}`,
     assault: `PLAY · DEADLY ASSAULT ${assault.cycles[s.assault]?.date.slice(5).replace("-", "/") ?? ""}`,
     signal: "SCAN · CHANNEL SEARCH",
@@ -100,6 +106,11 @@ export function RandomPlay({ agents, teams, details = {}, shiyu = EMPTY, assault
       {teams.length > 0 && (
         <TripleFeatures teams={teams} current={Math.min(s.team, teams.length - 1)} onPick={(team) => set({ team })} roster={roster}
           onOpenAgent={(selected) => set({ selected, view: "tape" })} open={s.view === "teams"} />
+      )}
+
+      {hasCombos && (
+        <ComboDeals deals={combos!.deals} bill={combos!.bill} current={Math.min(s.combo, combos!.deals.length - 1)} onPick={(combo) => set({ combo })}
+          roster={roster} onOpenAgent={(selected) => set({ selected, view: "tape" })} forName={combos!.forName} staff={combos!.staff} open={s.view === "combos"} />
       )}
 
       <Register ledger={shiyu} current={s.shiyu} onPick={(i) => set({ shiyu: i })} roster={roster}

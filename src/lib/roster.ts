@@ -76,6 +76,8 @@ export const PROFILE_ROSTER: Record<string, string[]> = {
     "jufufu",
     "astra", "yuzuha", "lucia", "sunna", "zhao",
     "yixuan", "yidhari",
+    // Nangong Yu (missed in an earlier update) + Velina + Phoenix: all home by 2026-10-25.
+    "nangongyu", "velina", "phoenix",
   ],
 };
 

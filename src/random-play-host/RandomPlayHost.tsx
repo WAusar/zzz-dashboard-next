@@ -8,8 +8,8 @@
 import { Suspense, useCallback, useEffect, useMemo, useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
-  RandomPlay, RandomPlayProvider, deriveAssault, derivePicks, deriveShiyu, deriveSignal, deriveTeams, flattenRuns,
-  type CoachAssault, type CoachPicks, type CoachSetlists, type CoachShiyu, type CoachSignal, type EditStatus, type JacketTab,
+  RandomPlay, RandomPlayProvider, deriveAssault, deriveCombos, derivePicks, deriveShiyu, deriveSignal, deriveTeams, flattenRuns,
+  type CoachAssault, type CoachCombos, type CoachPicks, type CoachSetlists, type CoachShiyu, type CoachSignal, type EditStatus, type JacketTab,
   type RandomPlayState, type SceneEditor, type View,
 } from "@/random-play";
 import { useData, type SyncStatus } from "@/lib/data-context";
@@ -20,6 +20,7 @@ import { setlistsFor } from "@/lib/setlists";
 import { shiyuCyclesFor, shiyuHistoryFor } from "@/lib/shiyu";
 import { assaultCyclesFor, assaultHistoryFor } from "@/lib/assault";
 import { pullPriorityFor } from "@/lib/pull-priority";
+import { comboDealsFor } from "@/lib/combo-deals";
 import { MAINS, SET_CHOICES, SUBSTATS } from "@/lib/deck-config";
 import { PROFILE_KEY } from "@/lib/supabase";
 import { withBase } from "@/lib/base-path";
@@ -28,11 +29,11 @@ import { liveAgent, liveDetail, mainValueFor } from "./live";
 
 const ASSETS = { assetBase: withBase("/rp"), assetVersion: RP_VENDORED };
 
-const VIEWS: View[] = ["shelf", "tape", "teams", "shiyu", "assault", "signal", "picks"];
+const VIEWS: View[] = ["shelf", "tape", "teams", "combos", "shiyu", "assault", "signal", "picks"];
 const TABS = ["specs", "scenes", "chapters"];
 const SYNC: Record<SyncStatus, EditStatus> = { loading: "live", live: "live", saving: "saving", local: "local", error: "error", locked: "locked" };
 
-/** ?tape=alice&tab=scenes · ?view=teams&feature=2 · ?view=shiyu&cycle=1 · ?view=picks&pick=3 */
+/** ?tape=alice&tab=scenes · ?view=teams&feature=2 · ?view=shiyu&cycle=1 · ?view=picks&pick=3 · ?view=combos&combo=4 */
 function fromParams(sp: URLSearchParams, base: Partial<RandomPlayState>): Partial<RandomPlayState> {
   const s = { ...base };
   const view = sp.get("view") as View | null;
@@ -45,6 +46,7 @@ function fromParams(sp: URLSearchParams, base: Partial<RandomPlayState>): Partia
   if (n("feature") != null) s.team = n("feature");
   if (n("cycle") != null) { if (s.view === "assault") s.assault = n("cycle"); else s.shiyu = n("cycle"); }
   if (n("pick") != null) s.pick = n("pick");
+  if (n("combo") != null) s.combo = n("combo");
   return s;
 }
 
@@ -56,6 +58,7 @@ function toParams(s: RandomPlayState): string {
   if (s.view === "shiyu" && s.shiyu) p.set("cycle", String(s.shiyu));
   if (s.view === "assault" && s.assault) p.set("cycle", String(s.assault));
   if (s.view === "picks" && s.pick) p.set("pick", String(s.pick));
+  if (s.view === "combos" && s.combo) p.set("combo", String(s.combo));
   const q = p.toString();
   return q ? `?${q}` : "";
 }
@@ -110,11 +113,20 @@ function Host({ initial }: RandomPlayHostProps) {
     const assault = { profiles: { [profileKey]: { cycles: assaultCyclesFor(profileKey), history: assaultHistoryFor(profileKey) } } } as unknown as CoachAssault;
     const setlists = { profiles: { [profileKey]: setlistsFor(profileKey) } } as unknown as CoachSetlists;
     const runs = flattenRuns(assault as unknown as { profiles: Record<string, unknown> }, shiyu as unknown as { profiles: Record<string, unknown> }, profileKey);
+    // Combo Deals: her bundles, receipted against A.'s logs (her account logs no endgame of its own)
+    const aKey = PROFILE_KEY;
+    const aRuns = flattenRuns(
+      { profiles: { [aKey]: { cycles: assaultCyclesFor(aKey), history: assaultHistoryFor(aKey) } } } as unknown as { profiles: Record<string, unknown> },
+      { profiles: { [aKey]: { cycles: shiyuCyclesFor(aKey), history: shiyuHistoryFor(aKey) } } } as unknown as { profiles: Record<string, unknown> },
+      aKey,
+    );
+    const combo = deriveCombos({ profiles: { [profileKey]: comboDealsFor(profileKey) } } as unknown as CoachCombos, aRuns, profileKey);
     const picksList = derivePicks({ profiles: { [profileKey]: pullPriorityFor(profileKey) } } as unknown as CoachPicks, profileKey);
     return {
       teams: deriveTeams(setlists, runs, profileKey),
       shiyu: deriveShiyu(shiyu, profileKey),
       assault: deriveAssault(assault, profileKey),
+      combos: combo.deals.length ? { ...combo, forName: isWife ? "Cosmea" : "A.", staff: "Clio" } : undefined,
       picks: picksList.length ? { list: picksList, forName: isWife ? "Cosmea" : "A.", staff: "Clio" } : undefined,
     };
   }, [profileKey, isWife]);
@@ -163,7 +175,7 @@ function Host({ initial }: RandomPlayHostProps) {
       <RandomPlay
         key={profileKey}
         agents={agents} details={details} teams={editorial.teams} shiyu={editorial.shiyu} assault={editorial.assault}
-        signal={isWife ? undefined : signal} picks={editorial.picks} uid={isWife ? undefined : store?.uid || undefined}
+        signal={isWife ? undefined : signal} picks={editorial.picks} combos={editorial.combos} uid={isWife ? undefined : store?.uid || undefined}
         initial={init}
         onStateChange={onStateChange} editorFor={editorFor} sync={SYNC[syncStatus]}
       />
