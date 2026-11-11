@@ -35,6 +35,7 @@ export const ROSTER: RosterEntry[] = [
   { name: "Phoenix", slug: "phoenix", section: "Anomaly", attribute: "Fire", mindscape: 0, el: "#f74c0f", faction: "Krampus Compliance Authority" }, // pulled M0R1 day one, 2026-10-20 (lost the 50/50, guarantee on the next ten)
   { name: "Yanagi", slug: "yanagi", section: "Anomaly", attribute: "Electric", mindscape: 0, el: "#14b0ff", faction: "Hollow Special Operations Section 6", wifeOnly: true }, // wife-only; mindscape placeholder (she edits)
   // — Attack —
+  { name: "Severian", slug: "severian", section: "Attack", attribute: "Wind", mindscape: 0, el: "#95c9ff", faction: "Public Security: Metropolitan Order Division", wifeOnly: true }, // wife-only: Cosmea pulled him 2026-11-11 (lost the first 50/50 to Caesar), no signature. Identity-only until her screens land.
   { name: "Ye Shunguang", slug: "yeshunguang", section: "Attack", attribute: "Honed Edge", mindscape: 1, el: "#9bb4fb",
     faction: "Yunkui Summit", title: "Void Hunter: Qingming Arbiter", voidHunter: true },
   { name: "Evelyn", slug: "evelyn", section: "Attack", attribute: "Fire", mindscape: 3, el: "#f74c0f", faction: "Stars of Lyra" },
@@ -78,6 +79,8 @@ export const PROFILE_ROSTER: Record<string, string[]> = {
     "yixuan", "yidhari",
     // Nangong Yu (missed in an earlier update) + Velina + Phoenix: all home by 2026-10-25.
     "nangongyu", "velina", "phoenix",
+    // Severian pulled 2026-11-11, no signature. A. doesn't own him, so there is no build to clone.
+    "severian",
   ],
 };
 

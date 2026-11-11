@@ -1,0 +1,244 @@
+{
+ "rank": "S",
+ "level": 60,
+ "faction": "Public Security: Metropolitan Order Division",
+ "section": "ATTACK",
+ "attribute": "Wind",
+ "mindscape": "M0",
+ "wengine": {
+  "name": "Cordis Germina",
+  "rank": "S",
+  "refine": "R1"
+ },
+ "relevant": [
+  "ATK",
+  "CRIT Rate",
+  "CRIT DMG"
+ ],
+ "mainStats": [
+  {
+   "stat": "HP",
+   "value": "12,364"
+  },
+  {
+   "stat": "ATK",
+   "value": "2,945"
+  },
+  {
+   "stat": "DEF",
+   "value": "790"
+  },
+  {
+   "stat": "Impact",
+   "value": "94"
+  },
+  {
+   "stat": "CRIT Rate",
+   "value": "69.8%"
+  },
+  {
+   "stat": "CRIT DMG",
+   "value": "122%"
+  },
+  {
+   "stat": "Anomaly Mastery",
+   "value": "91"
+  },
+  {
+   "stat": "Anomaly Proficiency",
+   "value": "90"
+  },
+  {
+   "stat": "PEN Ratio",
+   "value": "32%"
+  },
+  {
+   "stat": "Energy Regen",
+   "value": "1.2"
+  }
+ ],
+ "discs": {
+  "pieces": [
+   {
+    "set": "Woodpecker Electro",
+    "main": {
+     "stat": "HP",
+     "value": 2200
+    },
+    "rank": "S",
+    "slot": 1,
+    "subs": [
+     {
+      "stat": "ATK",
+      "rolls": 1
+     },
+     {
+      "stat": "ATK%",
+      "rolls": 2
+     },
+     {
+      "stat": "CRIT DMG",
+      "rolls": 2
+     },
+     {
+      "stat": "CRIT Rate",
+      "rolls": 3
+     }
+    ],
+    "level": 15
+   },
+   {
+    "set": "Dawn's Bloom",
+    "main": {
+     "stat": "ATK",
+     "value": 316
+    },
+    "rank": "S",
+    "slot": 2,
+    "subs": [
+     {
+      "stat": "CRIT Rate",
+      "rolls": 1
+     },
+     {
+      "stat": "CRIT DMG",
+      "rolls": 3
+     },
+     {
+      "stat": "Anomaly Proficiency",
+      "rolls": 1
+     },
+     {
+      "stat": "ATK%",
+      "rolls": 3
+     }
+    ],
+    "level": 15
+   },
+   {
+    "set": "Dawn's Bloom",
+    "main": {
+     "stat": "DEF",
+     "value": 184
+    },
+    "rank": "S",
+    "slot": 3,
+    "subs": [
+     {
+      "stat": "CRIT DMG",
+      "rolls": 2
+     },
+     {
+      "stat": "ATK%",
+      "rolls": 2
+     },
+     {
+      "stat": "HP%",
+      "rolls": 3
+     },
+     {
+      "stat": "CRIT Rate",
+      "rolls": 2
+     }
+    ],
+    "level": 15
+   },
+   {
+    "set": "Dawn's Bloom",
+    "main": {
+     "stat": "CRIT Rate",
+     "value": "48%"
+    },
+    "rank": "S",
+    "slot": 4,
+    "subs": [
+     {
+      "stat": "Anomaly Proficiency",
+      "rolls": 2
+     },
+     {
+      "stat": "CRIT DMG",
+      "rolls": 2
+     },
+     {
+      "stat": "ATK%",
+      "rolls": 3
+     },
+     {
+      "stat": "DEF%",
+      "rolls": 1
+     }
+    ],
+    "level": 15
+   },
+   {
+    "set": "Woodpecker Electro",
+    "main": {
+     "stat": "ATK%",
+     "value": "30%"
+    },
+    "rank": "S",
+    "slot": 5,
+    "subs": [
+     {
+      "stat": "CRIT Rate",
+      "rolls": 1
+     },
+     {
+      "stat": "CRIT DMG",
+      "rolls": 2
+     },
+     {
+      "stat": "HP",
+      "rolls": 3
+     },
+     {
+      "stat": "ATK",
+      "rolls": 2
+     }
+    ],
+    "level": 15
+   },
+   {
+    "set": "Dawn's Bloom",
+    "main": {
+     "stat": "ATK%",
+     "value": "30%"
+    },
+    "rank": "S",
+    "slot": 6,
+    "subs": [
+     {
+      "stat": "CRIT Rate",
+      "rolls": 1
+     },
+     {
+      "stat": "CRIT DMG",
+      "rolls": 1
+     },
+     {
+      "stat": "Flat PEN",
+      "rolls": 3
+     },
+     {
+      "stat": "HP",
+      "rolls": 3
+     }
+    ],
+    "level": 15
+   }
+  ]
+ },
+ "base": {
+  "ATK": 1353.684,
+  "HP": 8708.257,
+  "DEF": 578.244,
+  "CRIT Rate": 18.6,
+  "CRIT DMG": 64.4,
+  "Anomaly Proficiency": 63,
+  "Anomaly Mastery": 91,
+  "Impact": 94,
+  "Energy Regen": 1.2,
+  "PEN Ratio": 32
+ }
+}

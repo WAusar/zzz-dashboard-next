@@ -48,7 +48,8 @@ const AVATAR: Record<number, { name: string; slug: string }> = {
   1051: { name: "Yidhari", slug: "yidhari" },
   1431: { name: "Ye Shunguang", slug: "yeshunguang" }, // Enka codename "Zhenzhen"
   1561: { name: "Velina", slug: "velina" },            // not in Enka avatars.json yet
-  1641: { name: "Phoenix", slug: "phoenix" },          // codename "Pheony"; id from the game's own text map (Partner_Name_1641)
+  1631: { name: "Severian", slug: "severian" },        // full name "Severian Lowell" (Partner_Name_1631); Cosmea's roster only
+  1641: { name: "Phoenix", slug: "phoenix" },         // codename "Pheony"; id from the game's own text map (Partner_Name_1641)
   1481: { name: "Dialyn", slug: "dialyn" },
   1311: { name: "Astra Yao", slug: "astra" },
   1091: { name: "Miyabi", slug: "miyabi" },            // Enka codename "Unagi"

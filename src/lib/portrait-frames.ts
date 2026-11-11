@@ -86,6 +86,11 @@ export const PORTRAIT_FRAMES: Record<string, PortraitFrame> = {
     "left": 37.1,
     "height": 294.3
   },
+  "severian": {
+    "top": -0.0,
+    "left": 29.0,
+    "height": 294.3
+  },
   "soldier0anby": {
     "top": -0.0,
     "left": 53.8,

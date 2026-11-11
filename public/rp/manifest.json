@@ -1,6 +1,6 @@
 {
  "generated_by": "scripts/assemble-assets.py",
- "count": 361,
+ "count": 368,
  "files": [
   {
    "path": "agents/circle/alice.webp",
@@ -133,6 +133,12 @@
    "source": "zzz-dashboard-next/public/assets/endgame/seed.webp",
    "method": "copy",
    "bytes": 26324
+  },
+  {
+   "path": "agents/circle/severian.webp",
+   "source": "zzz-asset-rip/tools/newer_out/Sprite/IconRoleCircle1631.png",
+   "method": "IconRoleCircle1631 → webp (no dashboard endgame circle)",
+   "bytes": 7826
   },
   {
    "path": "agents/circle/soldier0anby.webp",
@@ -321,6 +327,12 @@
    "bytes": 148170
   },
   {
+   "path": "agents/cover/severian.webp",
+   "source": "zzz-dashboard-next/public/assets/tall/severian.webp",
+   "method": "face at 0.54 → 0.54 of the cover, k=0.8, 1040x1436",
+   "bytes": 220682
+  },
+  {
    "path": "agents/cover/soldier0anby.webp",
    "source": "zzz-dashboard-next/public/assets/tall/soldier0anby.webp",
    "method": "face at 0.50 → 0.54 of the cover, k=0.8, 1040x1436",
@@ -471,6 +483,12 @@
    "bytes": 8842
   },
   {
+   "path": "agents/emote/severian.webp",
+   "source": "zzz-asset-rip/tools/newer_out/Sprite/IconEmoji10128.png",
+   "method": "IconEmoji10128 (game IconEmoji series) → trimmed, lossless",
+   "bytes": 12942
+  },
+  {
    "path": "agents/emote/sigrid.webp",
    "source": "zzz-asset-rip/tools/emoji_out/Sprite/IconEmoji10120.png",
    "method": "IconEmoji10120 (game IconEmoji series) → trimmed, lossless",
@@ -601,6 +619,12 @@
    "source": "zzz-dashboard-next/public/assets/tall/seed.webp",
    "method": "3:5 crop, face (0.55, 0.14) pinned at (0.5, 0.26), 300x500",
    "bytes": 41088
+  },
+  {
+   "path": "agents/jacket/severian.webp",
+   "source": "zzz-dashboard-next/public/assets/tall/severian.webp",
+   "method": "3:5 crop, face (0.54, 0.14) pinned at (0.5, 0.26), 300x500",
+   "bytes": 40682
   },
   {
    "path": "agents/jacket/soldier0anby.webp",
@@ -771,6 +795,12 @@
    "bytes": 8314
   },
   {
+   "path": "agents/rect/severian.webp",
+   "source": "zzz-asset-rip/tools/newer_out/Sprite/IconRoleGeneral1631.png",
+   "method": "IconRoleGeneral1631 → lossless webp",
+   "bytes": 10544
+  },
+  {
    "path": "agents/rect/soldier0anby.webp",
    "source": "zzz-asset-rip/tools/art_raw/Sprite/IconRoleGeneral40.png",
    "method": "IconRoleGeneral40 → lossless webp",
@@ -939,6 +969,12 @@
    "bytes": 72834
   },
   {
+   "path": "agents/squad/severian.webp",
+   "source": "zzz-asset-rip/tools/newer_out/Sprite/IconRoleSelect1631.png",
+   "method": "IconRoleSelect1631 → lossless webp",
+   "bytes": 70774
+  },
+  {
    "path": "agents/squad/soldier0anby.webp",
    "source": "zzz-asset-rip/tools/art_raw/Sprite/IconRoleSelect40.png",
    "method": "IconRoleSelect40 → lossless webp",
@@ -1105,6 +1141,12 @@
    "source": "zzz-dashboard-next/public/assets/tall/seed.webp",
    "method": "copy",
    "bytes": 297764
+  },
+  {
+   "path": "agents/tall/severian.webp",
+   "source": "zzz-dashboard-next/public/assets/tall/severian.webp",
+   "method": "copy",
+   "bytes": 454892
   },
   {
    "path": "agents/tall/soldier0anby.webp",

@@ -123,6 +123,12 @@
       "CRIT Rate": { "target": 82, "cap": 90, "full": 95 },
       "CRIT DMG": { "target": 130, "full": 180 }
     } },
+    "_severian_note": "Severian (Cosmea's roster only). Prydwen, 2026-11-11: Disk 4 CRIT Rate / Disk 5 PEN Ratio / Disk 6 ATK%; subs CRIT Rate (until 100% in combat) > CRIT DMG > ATK% > Flat PEN > Flat ATK. Endgame Lv60: ATK 2800-3200+, CRIT Rate 79.4% WITH his signature (reaches 100% in combat), CRIT DMG 150-210%+. The 79.4 assumes the signature: she runs Cordis Germina for now, so re-check the CRIT Rate cap against whatever engine he ends on.",
+    "Severian": { "archetype": "attack", "targets": {
+      "ATK": { "target": 2800, "full": 3200 },
+      "CRIT Rate": { "target": 79.4, "cap": 80, "full": 85 },
+      "CRIT DMG": { "target": 150, "full": 210 }
+    } },
     "_cissia_note": "Cissia is gear-CR / passive-fed-CDMG (Festering Venom self-grants +50% CRIT DMG, off-screen combat) so her CRIT DMG goalpost is LOW (110+) and CRIT Rate is the gear stat (50-57 w/ signature, no mechanical cap). Disk 6 main is ENERGY REGEN, not ATK%: her Core Passive scales squad DEF-Ignore with ER above 1.4, maxing at 12.88% DEF-Ignore at ER 3.68 (1.4 + 19 steps of 0.52% per 0.12 ER) — that's the Energy Regen `cap`. Prydwen 2.7.",
     "Cissia": { "archetype": "attack", "mainStatPoints": { "6": { "Energy Regen": 3 } }, "targets": {
       "ATK": { "target": 2600, "full": 3200 },
