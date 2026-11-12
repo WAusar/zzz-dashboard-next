@@ -7,8 +7,15 @@
     "maxLevel": 15,
     "baseSubs": 4,
     "maxRollsPerSub": 6,
-    "totalRollsAtMax": 9
+    "totalRollsAtMax": 9,
+    "_ceilingComment": "100% on a disc = the substat score only 1 in `ceilingOdds` rollable discs reaches for that slot + main + agent weights (the engine enumerates every disc the game can roll there). Lower = more generous: 100 lifts every build 4-10 pts, 1000 keeps the board about as strict as the old perfect-disc ceiling while un-punishing slots with one useful substat. A.'s call 2026-11-12.",
+    "ceilingOdds": 1000,
+    "_substatPoolComment": "The only stats that can roll as a substat. A disc never rolls its own main stat as a sub (flat and % are different stats). PEN Ratio / Anomaly Mastery / Impact / Energy Regen are main-only, so any weight they carry never enters a ceiling.",
+    "substatPool": ["HP", "ATK", "DEF", "HP%", "ATK%", "DEF%", "CRIT Rate", "CRIT DMG", "Flat PEN", "Anomaly Proficiency"]
   },
+
+  "_deriveFlatWeightsComment": "Flat ATK / HP / DEF substat weights are DERIVED per agent from their base: %weight x flatRoll / (%roll x base), e.g. 19 flat ATK vs 3% of a ~1,570 base = 0.40 of an ATK% roll. The flat numbers in the archetype tables below are only the fallback for an agent with no back-solved base. Set false to go back to the table values.",
+  "deriveFlatWeights": true,
 
   "mainWeightMultiplier": 2.5,
   "partnerBoost": 4.25,

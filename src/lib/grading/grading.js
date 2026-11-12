@@ -5,7 +5,8 @@
  *
  * Model (per disc):
  *   discScore = mainStatPoints * mainWeightMultiplier  +  Σ_substats ( rolls × weight )
- *   maxScore  = 3 * mainWeightMultiplier                +  idealRollScore(slot, archetype)
+ *   maxScore  = 3 * mainWeightMultiplier                +  ceilingRollScore(slot, main, archetype)
+ *               (the substat score only 1 in rollModel.ceilingOdds rollable discs reaches)
  *   pct       = clamp(discScore / maxScore * 100)
  *   letter    = scale lookup (SSS … E)
  *
@@ -24,7 +25,22 @@ export function resolveArchetype(agent, cfg) {
     || "attack";
   const base = cfg.archetypes[name];
   if (!base) throw new Error(`Unknown archetype "${name}" for ${agent.name}`);
-  const weights = ov?.weights ? { ...base.weights, ...ov.weights } : base.weights;
+  let weights = ov?.weights ? { ...base.weights, ...ov.weights } : base.weights;
+  // Flat ATK / HP / DEF are worth a fixed fraction of their % twin, and that fraction is pure
+  // arithmetic on the agent's own base: one flat roll (19 ATK) vs one % roll (3% of base ATK). So
+  // instead of a hand-set token weight, derive it: flat = %weight × flatRoll ÷ (%roll × base).
+  // ~0.4 of ATK% and ~0.45-0.5 of HP% on real bases. An agent override that names the flat stat
+  // wins; an agent with no back-solved base keeps the archetype's configured weight.
+  if (cfg.deriveFlatWeights !== false && agent.base) {
+    const rv = cfg.rollValues || {};
+    const derived = {};
+    for (const [flat, pct] of [["ATK", "ATK%"], ["HP", "HP%"], ["DEF", "DEF%"]]) {
+      const b = agent.base[flat];
+      if (!(b > 0) || !rv[flat] || !rv[pct] || ov?.weights?.[flat] != null) continue;
+      derived[flat] = +((weights[pct] ?? 0) * rv[flat] / (rv[pct] / 100 * b)).toFixed(2);
+    }
+    weights = { ...weights, ...derived };
+  }
   // Per-agent mainStatPoints: deep-merge each overridden slot OVER the archetype default, so a
   // kit-specific slot main (Rupture HP% on 6, Miyabi CRIT Rate on 4, Cissia/Velina Energy Regen on 6)
   // scores as the recommended main instead of falling to the off-meta `?? 1` — without dropping the
@@ -54,18 +70,63 @@ function effWeight(stat, slot, mainStat, A, cfg) {
   return w;
 }
 
-/** Best achievable substat score for a slot: cap the top weight at 6 rolls, 1 roll each on the next 3. */
-function idealRollScore(slot, mainStat, A, cfg) {
-  const pool = Object.keys(A.weights)
-    .map((s) => effWeight(s, slot, mainStat, A, cfg))
-    .sort((a, b) => b - a);
-  const [w0 = 0, w1 = 0, w2 = 0, w3 = 0] = pool;
-  const cap = cfg.rollModel.maxRollsPerSub;       // 6
-  const total = cfg.rollModel.totalRollsAtMax;    // 9
-  const spill = Math.max(0, total - cap);         // 3 rolls spread on the other subs
-  // distribute the spill 1-per-sub across w1..w3 (already their base roll); here base+0 since
-  // the 4 subs each carry 1 base roll counted in `total`. Optimal = cap on w0, base on rest.
-  return w0 * cap + (w1 + w2 + w3) * Math.min(1, spill);
+/** The only stats the game can roll as a Drive Disc substat. PEN Ratio, Anomaly Mastery, Impact,
+ *  Energy Regen and attribute DMG are main-only. cfg.rollModel.substatPool overrides. */
+const SUBSTAT_POOL = ["HP", "ATK", "DEF", "HP%", "ATK%", "DEF%", "CRIT Rate", "CRIT DMG", "Flat PEN", "Anomaly Proficiency"];
+
+function* _combos(arr, k, start = 0, cur = []) {
+  if (cur.length === k) { yield cur.slice(); return; }
+  for (let i = start; i < arr.length; i++) { cur.push(arr[i]); yield* _combos(arr, k, i + 1, cur); cur.pop(); }
+}
+/** Every way to hand `n` upgrades to `k` substats, with its multinomial count. */
+function* _splits(n, k, cur = []) {
+  if (cur.length === k - 1) { yield [...cur, n]; return; }
+  for (let i = 0; i <= n; i++) yield* _splits(n - i, k, [...cur, i]);
+}
+const _fact = (n) => (n <= 1 ? 1 : n * _fact(n - 1));
+const _ceilingMemo = new Map();
+
+/**
+ * The substat score that counts as 100% for this slot + main + weights: the score only 1 in
+ * `rollModel.ceilingOdds` rollable discs reaches (default 1,000), found by enumerating EVERY disc the
+ * game can produce there. A theoretical perfect disc was the old ceiling, and it punished slots with
+ * few useful substats: an Anomaly agent's AP-main slot 4 has ATK% as its one good sub, so anything
+ * above an A needed all five upgrades in one line, while a crit slot 4 has two or three lines to catch
+ * them. Grading against a fixed rarity makes equal luck read as the same letter on every slot.
+ *
+ * Game rules baked in: substats come from SUBSTAT_POOL only, and a disc never rolls its own main stat
+ * as a substat (flat and % are different stats, so an ATK% main can still roll flat ATK).
+ * Odds model (guide-level, no datamine exists): 4 starting subs drawn uniformly, each upgrade uniform
+ * over the 4 lines.
+ */
+function ceilingRollScore(slot, mainStat, A, cfg) {
+  const rm = cfg.rollModel || {};
+  const odds = rm.ceilingOdds || 1000;
+  const key = [slot, mainStat, odds, cfg.partnerBoost, (A.pairs || []).join(","), JSON.stringify(A.weights)].join("|");
+  if (_ceilingMemo.has(key)) return _ceilingMemo.get(key);
+
+  const baseSubs = rm.baseSubs || 4;
+  const upgrades = (rm.totalRollsAtMax || 9) - baseSubs;                  // 5
+  const pool = (rm.substatPool || SUBSTAT_POOL).filter((s) => s !== mainStat);
+  const w = Object.fromEntries(pool.map((s) => [s, effWeight(s, slot, mainStat, A, cfg)]));
+  const sets = [..._combos(pool, baseSubs)];
+  const splits = [..._splits(upgrades, baseSubs)].map((sp) =>
+    [sp, _fact(upgrades) / sp.reduce((a, n) => a * _fact(n), 1) / baseSubs ** upgrades]);
+
+  const dist = [];                                                        // [rollScore, probability]
+  for (const set of sets) {
+    for (const [sp, p] of splits) {
+      let score = 0;
+      for (let i = 0; i < baseSubs; i++) score += (1 + sp[i]) * w[set[i]];
+      dist.push([score, p / sets.length]);
+    }
+  }
+  dist.sort((a, b) => a[0] - b[0]);
+  const q = 1 - 1 / odds;
+  let cum = 0, ceiling = dist[dist.length - 1][0];
+  for (const [score, p] of dist) { cum += p; if (cum >= q - 1e-12) { ceiling = score; break; } }
+  _ceilingMemo.set(key, ceiling);
+  return ceiling;
 }
 
 function letterFor(pct, cfg) {
@@ -91,7 +152,7 @@ export function gradeDisc(piece, A, cfg) {
 
   const mult = cfg.mainWeightMultiplier;
   const score = mainPts * mult + rollScore;
-  const maxScore = 3 * mult + idealRollScore(slot, piece.main?.stat, A, cfg);
+  const maxScore = 3 * mult + ceilingRollScore(slot, piece.main?.stat, A, cfg);
   const pct = Math.max(0, Math.min(100, (score / maxScore) * 100));
   const tier = letterFor(pct, cfg);
 

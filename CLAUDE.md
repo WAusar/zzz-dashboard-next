@@ -48,6 +48,13 @@ Random Play replaced the "Soundsystem" look on 2026-09-28. Sibling to `wuwa-dash
 ## Grading model (see docs/ + ../zzz-redesign-mockups/grading/GRADING_SPEC.md)
 - Per-disc: `mainPts + Σ(rolls × weight)` → % → letter. Weights per **archetype** (from `section`),
   agent overrides allowed. Slot 4/5 **partner boost** (off-main stat → 4.25).
+- **Flat ATK / HP / DEF weights are derived**, not hand-set: `%weight × flatRoll ÷ (%roll × agent.base)`
+  in `resolveArchetype` (about 0.4 of ATK%, 0.45–0.5 of HP%). The flat numbers in the archetype tables
+  are only the fallback for an agent with no base. `deriveFlatWeights: false` turns it off.
+- **100% is a rarity, not a perfect disc**: the ceiling is the substat score only 1 in
+  `rollModel.ceilingOdds` (1,000) rollable discs reaches for that slot + main + agent weights, found
+  by enumerating every legal disc (`ceilingRollScore`). Legal = `rollModel.substatPool` minus the
+  disc's own main stat. This keeps one-useful-substat slots (AP-main slot 4) from grading a letter low.
 - Sheet vs Effective: effects tagged `scope: sheet|combat`, `kind: stat|dmg|buildup`. Combat stat mods
   only show in Effective; dmg/buildup are buff chips.
 - Stat base numbers are **calibrated/illustrative** (atkPool 880 → ATK≈2769) — refine to exact ZZZ later.
