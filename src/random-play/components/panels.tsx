@@ -150,7 +150,7 @@ function SceneCard({ disc: d, reroll, index, editor }: { disc: Disc; reroll: boo
       </div>
       <div className="rp-disc__subs">
         {d.subs.map((s, i) => (
-          <div key={editor ? i : s.stat} className={`rp-sub${s.relevant ? " is-rel" : ""}${editor ? " is-edit" : ""}`}>
+          <div key={editor ? i : s.stat} className={`rp-sub${s.relevant ? " is-rel" : s.minor ? " is-min" : ""}${editor ? " is-edit" : ""}`}>
             {editor ? (
               <select className="rp-select rp-select--sub" value={s.stat} aria-label={`Scene 0${d.slot} substat ${i + 1}`} onChange={(e) => editor.onSub(d.slot, i, e.target.value)}>
                 {opts(editor.substats, s.stat).map((o) => <option key={o} value={o}>{o}</option>)}
@@ -199,7 +199,7 @@ export function ScenesPanel({ agent: a, detail, editor }: { agent: Agent; detail
       {weakest && (
         <div className="rp-note rp-stagger" style={{ marginTop: 18, display: "flex", gap: 10, alignItems: "center", ...delay(480) }}>
           <span className="rp-infobadge" aria-hidden="true">!</span>
-          <span>Bold rows are rolls {a.spine} actually uses. Orange ticks = upgrade hits. Weakest disc: <b>Scene 0{weakest.slot}, {weakest.grade} · {weakest.pct}%</b>, the best re-roll target.{editor ? " Every pick re-grades the tape on the spot." : ""}</span>
+          <span>Bold rows are rolls {a.spine} actually uses. Plain rows count a little, grey rows count for nothing. Orange ticks = upgrade hits. Weakest disc: <b>Scene 0{weakest.slot}, {weakest.grade} · {weakest.pct}%</b>, the best re-roll target.{editor ? " Every pick re-grades the tape on the spot." : ""}</span>
         </div>
       )}
     </>

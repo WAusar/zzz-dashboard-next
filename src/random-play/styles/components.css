@@ -1,5 +1,5 @@
 /* Random Play — component styles. Class grammar: .rp-<component>[__<part>] + state classes
-   (.is-open .is-on .is-in .is-away .is-dim .is-lit .is-hot .is-cap .is-rel .is-warn).
+   (.is-open .is-on .is-in .is-away .is-dim .is-lit .is-hot .is-cap .is-rel .is-min .is-warn).
    Motion values come from tokens; stagger delays are set inline by components (data-driven). */
 
 /* ============================================================ shell */
@@ -238,6 +238,11 @@
 .rp-sub__ticks i { display: block; width: 7px; height: 14px; border-radius: 1px; background: #B9AD99; }
 .rp-sub.is-rel .rp-sub__ticks i { background: var(--rp-ink); }
 .rp-sub.is-rel .rp-sub__ticks i.is-up { background: var(--rp-accent); }
+/* is-min: the roll counts toward the grade at a fraction (flat ATK / HP beside its % twin). Ink text at
+   regular weight and half-strength ticks, between the bold is-rel row and the grey dead one. */
+.rp-sub.is-min { color: var(--rp-ink); }
+.rp-sub.is-min .rp-sub__ticks i { background: var(--rp-text-3); }
+.rp-sub.is-min .rp-sub__ticks i.is-up { background: color-mix(in srgb, var(--rp-accent) 55%, var(--rp-paper)); }
 .rp-disc__pct { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-family: var(--rp-font-mono); font-size: var(--rp-size-label); font-weight: 700; }
 .rp-disc__bar { flex: 1; height: 6px; background: var(--rp-paper-2); border-radius: 3px; overflow: hidden; }
 .rp-disc__bar > div { height: 100%; background: var(--rp-ink); }
@@ -253,6 +258,7 @@
 .rp-select--main { text-transform: uppercase; }
 .rp-select--sub { flex: 1; font-family: var(--rp-font-body); font-weight: inherit; font-size: 12px; letter-spacing: 0; color: inherit; padding: 2px 18px 2px 6px; background-color: transparent; border-color: var(--rp-rule); }
 .rp-sub.is-rel .rp-select--sub { border-color: var(--rp-ink); }
+.rp-sub.is-min .rp-select--sub { border-color: var(--rp-text-3); }
 .rp-sub.is-edit { gap: 6px; height: 26px; }
 .rp-sub__roll { display: flex; align-items: center; gap: 4px; flex: none; }
 .rp-sub.is-edit .rp-sub__ticks { gap: 2px; min-width: 52px; justify-content: center; }

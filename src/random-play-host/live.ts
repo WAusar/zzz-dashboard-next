@@ -146,7 +146,7 @@ export function liveDetail(entry: RosterEntry, blob: BlobAgent | undefined): Bui
         return {
           slot: pc.slot as Disc["slot"], set: pc.set, grade: gd ? letter(gd.letter) : ("E" as Grade), pct: gd?.pct ?? 0,
           main: { stat: pc.main.stat, value: fmtVal(pc.main.value) },
-          subs: pc.subs.map((s) => ({ stat: s.stat, rolls: s.rolls, relevant: !!gd?.subs.find((x) => x.stat === s.stat)?.useful })),
+          subs: pc.subs.map((s) => { const g = gd?.subs.find((x) => x.stat === s.stat); return { stat: s.stat, rolls: s.rolls, relevant: !!g?.useful, minor: !!g && !g.useful && !g.dead }; }),
         };
       })
       .sort((x, y) => x.slot - y.slot);

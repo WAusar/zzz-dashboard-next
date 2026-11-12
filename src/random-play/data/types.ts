@@ -29,7 +29,9 @@ export interface Agent {
   sheet: StatRow[];
 }
 
-export interface DiscSub { stat: string; rolls: number; relevant: boolean }
+/** `relevant` = a stat the agent builds for (bold). `minor` = counts toward the grade at a fraction
+ *  (flat ATK beside ATK%, flat HP on an HP scaler): plain row, not greyed. Neither = worth nothing. */
+export interface DiscSub { stat: string; rolls: number; relevant: boolean; minor?: boolean }
 export interface Disc {
   slot: 1 | 2 | 3 | 4 | 5 | 6;
   set: string;
